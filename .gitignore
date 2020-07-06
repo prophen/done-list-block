@@ -1,0 +1,5 @@
+node_modules
+.airtableAPIKey
+build
+config.js
+.prettierrc
