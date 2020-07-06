@@ -1,32 +1,24 @@
-# To-do list block
+# The Done List Block
 
-This example block shows a to-do list based on the records in a table.
+Instead of making a list of things to do, this block allows you to document what has already been done. It's a way to remind ourselves that even when it feels like we aren't productive, there are small wins we can recognize throughout the day.
 
-The code shows:
+When a done list item is added via the block a message congratulating you on your acheivement is sent by SMS using a Twilio function.
 
--   How to query and display data from your base.
 
--   How to use core Airtable functions like "expand record".
+# Instructions to send text messages
+Create a Twilio function and update your phone number settings to use the function path as a webhook when a message is received.
 
--   How to use the built-in component library to let the user choose a table.
+This is the code to paste in the configuration of your Function.
+```
+exports.handler = function(context, event, callback) {
+  context.getTwilioClient().messages.create({
+    to: '+15555555555', //Enter your phone to receive a text
+    from: '+15555555555', //Enter your Twilio phone number
+    body: `"${event.msg}" - That's a win, good job! `
+  }).then(msg => {
+    callback(null, msg.sid);
+  }).catch(err => callback(err));
+}
+```
 
--   How to store settings in `globalConfig`.
-
--   How to create, update, and delete records in your base.
-
--   How to make your block adapt to the current user's permissions.
-
-## How to run this block
-
-1. Copy
-   [this base](https://airtable.com/shrKs6a2cQPEK5yzr/tbl1O3LqNL0wSBjfw/viwiJOsjivcJFXAAB?blocks=hide).
-
-2. Create a new block in your new base (see
-   [Create a new block](https://airtable.com/developers/blocks/guides/hello-world-tutorial#create-a-new-block)),
-   selecting "To-do list" as your template.
-
-3. From the root of your new block, run `block run`.
-
-## See the block running
-
-![Block updating to-do list as the user changes data](media/block.gif)
+Rename sample.config.js, uncomment the code and update it with your own path from the Twilio function.
